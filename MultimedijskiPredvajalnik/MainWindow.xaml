@@ -1,0 +1,254 @@
+﻿<Window x:Class="MultimedijskiPredvajalnik.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MultimedijskiPredvajalnik"
+        mc:Ignorable="d"
+        Title="MainWindow" MinHeight="110" MinWidth="450" Height="450" Width="810"
+        ResizeMode="CanResizeWithGrip">
+    <!-- styles for gradniki -->
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="DictionaryTextBlock.xaml"/>
+                <ResourceDictionary Source="DictionaryStackpanel.xaml"/>
+                <ResourceDictionary Source="DictionaryMenuItem.xaml"/>
+                <ResourceDictionary Source="DictionaryMediaElement.xaml"/>
+                <ResourceDictionary Source="DictionaryRectangle.xaml"/>
+                <ResourceDictionary Source="DictionaryGridSplitter.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <!-- define grid which has mousewheel method (volume change) -->
+    <Grid x:Name="MainGrid" MouseWheel="Grid_MouseWheel" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="3"/> <!--gridSplitter-->
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="3"/>
+            <ColumnDefinition Width="50*"/>
+        </Grid.ColumnDefinitions>
+        <!-- set rectangle as mediaBackground (element in same space as Media, directly behind Media) -->
+        <Rectangle Name="MediaBackground" Grid.Row="3" Grid.ColumnSpan="3" Style="{StaticResource styleRectangle}">
+            <Rectangle.Triggers>
+                <!-- Animation for rectangle item -->
+                <EventTrigger RoutedEvent="Rectangle.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard Name="StoryboardMediaBackground">
+                            <DoubleAnimation x:Name="AnimationBackground"
+                                Storyboard.TargetName="MediaBackground"
+                                Storyboard.TargetProperty="Opacity"
+                                From="1.0" To="0.0" Duration="0:0:5"
+                                AutoReverse="True" RepeatBehavior="Forever"
+                                />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Rectangle.Triggers>
+        </Rectangle>
+        <!--
+        <Path Fill="DeepSkyBlue" Grid.Row="3" Grid.ColumnSpan="3" >
+            <Path.Data>
+                <EllipseGeometry x:Name="AnimationCircle"
+          Center="10,10" RadiusX="10" RadiusY="10" />
+            </Path.Data>
+            <Path.Triggers>
+                <EventTrigger RoutedEvent="Path.Loaded">
+                    <BeginStoryboard Name="StoryboardCircle">
+                        <Storyboard>
+                            <PointAnimationUsingPath
+                Storyboard.TargetName="AnimationCircle"
+                Storyboard.TargetProperty="Center"
+                Duration="0:0:5" 
+                RepeatBehavior="Forever" AutoReverse="True" >
+                                <PointAnimationUsingPath.PathGeometry>
+                                    <PathGeometry 
+                    Figures="M 0,400 C 200,000 100,300 400,400 200,200 200,200 300,100"
+                     />
+                                </PointAnimationUsingPath.PathGeometry>
+                            </PointAnimationUsingPath>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Path.Triggers>
+        </Path>
+        -->
+        <!-- define Media element -->
+        <MediaElement Name="Media" Grid.Row="3" Grid.ColumnSpan="3" Style="{StaticResource styleMediaElement}" MediaOpened="Media_MediaOpened" MediaEnded="Media_MediaEnded"/>
+        <!-- define Playlist menu (ListView) element -->
+        <ListView Name="PlaylistMenu" Grid.Row="1" Grid.ColumnSpan="3"
+                  MouseDoubleClick="PlaylistMenu_MouseDoubleClick">
+            <!-- define items in ListView element -->
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel x:Name="PlaylistItem" Style="{StaticResource styleStackpanelVert}">
+                        <TextBlock Style="{StaticResource styleTextBlock}" Text="{Binding Path}"/>
+                        <TextBlock Style="{StaticResource styleTextBlock}" Text="{Binding Artist}"/>
+                        <TextBlock Style="{StaticResource styleTextBlock}" Text="{Binding Album}"/>
+                        <TextBlock Style="{StaticResource styleTextBlock}" Text="{Binding Duration}"/>
+                        <TextBlock Style="{StaticResource styleTextBlock}" Text="{Binding Genre}"/>
+                        <!-- <Image Style="{StaticResource styleTextBlock}" Source="{Binding Image}"/> -->
+                    </StackPanel>
+                    <DataTemplate.Triggers>
+                        <!--
+                        <DataTrigger Binding="{Binding Path=Media}" Value="True" >
+                            <Setter TargetName="PlaylistItem" Property="Canvas.Background" Value="LightBlue" />
+                        </DataTrigger>
+                        -->
+                        <!-- dataTrigger for coloring currently playing media (method in Multimedia.cs) -->
+                        <DataTrigger Binding="{Binding IsPlayingMedia}" Value="True" >
+                            <Setter TargetName="PlaylistItem" Property="Canvas.Background" Value="LightBlue" />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+
+                    <!--
+                    <Grid Name="PlaylistItem">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="16*"/>
+                            <ColumnDefinition Width="16*"/>
+                            <ColumnDefinition Width="16*"/>
+                            <ColumnDefinition Width="16*"/>
+                            <ColumnDefinition Width="16*"/>
+                            <ColumnDefinition Width="16*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Margin="2,0" Text="{Binding Path}"/>
+                        <TextBlock Grid.Column="1" Margin="2,0" Text="{Binding Artist}"/>
+                        <TextBlock Grid.Column="2" Margin="2,0" Text="{Binding Album}"/>
+                        <TextBlock Grid.Column="3" Margin="2,0" Text="{Binding Duration}"/>
+                        <TextBlock Grid.Column="4" Margin="2,0" Text="{Binding Genre}"/>
+                        <Image Grid.Column="5" Margin="2,0" Source="{Binding Image}"/>
+                    </Grid>
+                    -->
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <!-- contextMenu (right click menu) for items in ListView -->
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add element" Click="MenuItemPlaylistAdd_Click" />
+                    <MenuItem Header="Edit element" Click="MenuItemPlaylistEdit_Click" />
+                    <MenuItem Header="Delete element" Click="MenuItemPlaylistRemove_Click" />
+                    <MenuItem Header="Import playlist" Click="MenuItemImport_Click" />
+                    <MenuItem Header="Export playlist" Click="MenuItemExport_Click" />
+                </ContextMenu>
+            </ListView.ContextMenu>
+            <!--
+            <ListView.View>
+                <GridView AllowsColumnReorder="True" ColumnHeaderToolTip="Playlists">
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Path" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Duration, Mode=TwoWay}" Header="Duration"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Album, Mode=TwoWay}" Header="Album"/>
+                </GridView>
+            </ListView.View>
+            -->
+        </ListView>
+        <!-- define Gridsplitter element (element which splits the grids of PlaylistMenu and Media), occupies own gridRow -->
+        <GridSplitter Name="Splitter" Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource styleGridSplitterHoriz}"/>
+        <DockPanel Grid.Row="4" Grid.ColumnSpan="3" >
+            <!-- insert PlayerControls element (defined in different window - UserControlPlayerControls) -->
+            <local:UserControlPlayerControls x:Name="PlayerControls">
+
+            </local:UserControlPlayerControls>
+            <!--
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="25" Height="50*"/>
+                    <RowDefinition MinHeight="25" Height="50*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition MinWidth="40" Width="5*"/>
+                    <ColumnDefinition MinWidth="70" Width="10*"/>
+                    <ColumnDefinition MinWidth="70" Width="10*"/>
+                    <ColumnDefinition MinWidth="70" Width="10*"/>
+                    <ColumnDefinition MinWidth="70" Width="10*"/>
+                    <ColumnDefinition Width="50*"/>
+                    <ColumnDefinition MinWidth="40" Width="5*"/>
+                </Grid.ColumnDefinitions>
+                <Slider
+                Background="Gray" 
+                    Margin="0,3,0,2" Grid.Column="1" Grid.ColumnSpan="5"
+                />
+                <Label Grid.Column="0" Grid.Row="0" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    0:00
+                </Label>
+                <Button Click="ButtonPlay_Click" MaxHeight="24"  HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" >
+                    <Image Source="Resources/icon_play.png"/>
+                </Button>
+                <Button Width="40" MaxHeight="22" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" >
+                    <Image Source="Resources/icon_prev.png"/>
+                </Button>
+                <Button Width="40" MaxHeight="22" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" >
+                    <Image Source="Resources/icon_next.png"/>
+                </Button>
+                <Button MaxHeight="22" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="3" Grid.Row="1" >
+                    <Image Source="Resources/icon_repeat.png"/>
+                </Button>
+                <Button MaxHeight="22" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="4" Grid.Row="1" >
+                    <Image Source="Resources/icon_shuffle.png"/>
+                </Button>
+                <Label Grid.Column="6" Grid.Row="0" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    10:00
+                </Label>
+            </Grid>
+            -->
+        </DockPanel>
+        <!-- define menu element (at top, defined at bottom in code to ensure the item appers in front of all others) -->
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="3" >
+            <Menu>
+                <!-- import or export Playlist as xml -->
+                <MenuItem Header="_File">
+                    <MenuItem Header="Import" Click="MenuItemImport_Click" Style="{StaticResource styleMenuItem}">
+                        <MenuItem.Icon>
+                            <Image Source="Resources/icon_import.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Export" Click="MenuItemExport_Click" Style="{StaticResource styleMenuItem}">
+                        <MenuItem.Icon>
+                        <Image Source="Resources/icon_export.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="_Exit" Click="MenuItemExit_Click" Style="{StaticResource styleMenuItem}"/>
+                </MenuItem>
+                <!-- add, edit or remove Playlist items -->
+                <MenuItem Header="_Playlist" SubmenuOpened="MenuItem_SubmenuOpened" >
+                    <MenuItem Header="Show Playlist" Click="MenuItemShowPlaylist_Click" Style="{StaticResource styleMenuItemCheck}"/>
+                    <Separator/>
+                    <MenuItem Header="Add" Click="MenuItemPlaylistAdd_Click" Style="{StaticResource styleMenuItem}">
+                        <MenuItem.Icon>
+                            <Image Source="Resources/icon_add.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="MenuItemEdit" Header="Edit" Click="MenuItemPlaylistEdit_Click" Style="{StaticResource styleMenuItem}">
+                        <MenuItem.Icon>
+                            <Image Source="Resources/icon_edit.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Remove" Click="MenuItemPlaylistRemove_Click" Style="{StaticResource styleMenuItem}">
+                        <MenuItem.Icon>
+                            <Image Source="Resources/icon_delete.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <!-- set appearence of window -->
+                <MenuItem Header="_Appearance">
+                    <MenuItem Name="ViewHoriz" Header="Horizontal" Click="ApperanceBothViews_Click" Style="{StaticResource styleMenuItemCheck}"/>
+                    <MenuItem Name="ViewVert" Header="Vertical" Click="ApperanceBothViews_Click" Style="{StaticResource styleMenuItemCheck}"/>
+                </MenuItem>
+                <!-- open settings menu -->
+                <MenuItem Header="_Tools">
+                    <MenuItem Header="_Settings" Click="MenuItemToolsSettings_Click" Style="{StaticResource styleMenuItem}"/>
+                </MenuItem>
+                <!-- open help menu -->
+                <MenuItem Header="_Help">
+                    <MenuItem Header="_Info" Click="MenuItemToolsHelp_Click" Style="{StaticResource styleMenuItem}"/>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+    </Grid>
+</Window>
+

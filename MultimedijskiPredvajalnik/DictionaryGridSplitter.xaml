@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="styleGridSplitterHoriz" TargetType="GridSplitter">
+        <Setter Property="Height" Value="3"/>
+        <Setter Property="Background" Value="LightGray"/>
+        <Setter Property="ResizeDirection" Value="Rows"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    </Style>
+    <Style x:Key="styleGridSplitterVert" TargetType="GridSplitter">
+        <Setter Property="Width" Value="3"/>
+        <Setter Property="Background" Value="LightGray"/>
+        <Setter Property="ResizeDirection" Value="Columns"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    </Style>
+</ResourceDictionary>

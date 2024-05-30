@@ -1,0 +1,38 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="styleTextBox" TargetType="{x:Type TextBox}">
+        <Setter Property="Width" Value="300"/>
+        <Setter Property="Margin" Value="0,10,0,10"/>
+        <Setter Property="FontFamily" Value="sans-serif"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Style.Resources>
+            <Style TargetType="{x:Type Border}">
+                <Setter Property="CornerRadius" Value="4"/>
+            </Style>
+        </Style.Resources>
+    </Style>
+    <Style x:Key="styleTextBoxLeft" TargetType="{x:Type TextBox}">
+        <Setter Property="Width" Value="100"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="sans-serif"/>
+        <Style.Resources>
+            <Style TargetType="{x:Type Border}">
+                <Setter Property="CornerRadius" Value="4"/>
+            </Style>
+        </Style.Resources>
+    </Style>
+    <Style x:Key="styleTextBoxSquished" TargetType="{x:Type TextBox}">
+        <Setter Property="Margin" Value="10,5"/>
+        <Setter Property="FontFamily" Value="sans-serif"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Style.Resources>
+            <Style TargetType="{x:Type Border}">
+                <Setter Property="CornerRadius" Value="4"/>
+            </Style>
+        </Style.Resources>
+    </Style>
+</ResourceDictionary>

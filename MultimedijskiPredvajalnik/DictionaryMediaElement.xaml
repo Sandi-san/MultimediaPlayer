@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="styleMediaElement" TargetType="MediaElement">
+        <Setter Property="LoadedBehavior" Value="Manual"/>
+        <Setter Property="UnloadedBehavior" Value="Close"/>
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="Background" Value="Black"/>
+            </Style>
+        </Style.Resources>
+    </Style>
+</ResourceDictionary>

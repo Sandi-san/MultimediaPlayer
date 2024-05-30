@@ -1,0 +1,80 @@
+﻿<Window x:Class="MultimedijskiPredvajalnik.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MultimedijskiPredvajalnik"
+        mc:Ignorable="d"
+        Title="Settings" Height="250" Width="400"
+        ResizeMode="NoResize" >
+    <!-- styles for gradniki -->
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="DictionaryLabel.xaml"/>
+                <ResourceDictionary Source="DictionaryStackpanel.xaml"/>
+                <ResourceDictionary Source="DictionaryTextBox.xaml"/>
+                <ResourceDictionary Source="DictionaryComboBox.xaml"/>
+                <ResourceDictionary Source="DictionaryCheckBox.xaml"/>
+                <ResourceDictionary Source="DictionaryButton.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <!-- menu items -->
+        <TabControl>
+            <TabItem Header="Add genre">
+                <StackPanel Style="{StaticResource styleStackpanelVert}">
+                    <Label Style="{StaticResource styleLabel}">Genre name:</Label>
+                    <TextBox Name="TextBoxAdd" Style="{StaticResource styleTextBox}"></TextBox>
+                    <Button Style="{StaticResource styleButton}" Click="ButtonAdd_Click">Add</Button>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Edit genre">
+                <StackPanel Style="{StaticResource styleStackpanelVert}">
+                    <Label Style="{StaticResource styleLabel}">List of genres:</Label>
+                    <ComboBox Name="ComboBoxEdit" Style="{StaticResource styleComboBox}" SelectionChanged="ComboBoxEdit_SelectionChanged"></ComboBox>
+                    <Label Style="{StaticResource styleLabel}">Change genre name:</Label>
+                    <TextBox Name="TextBoxEdit" Style="{StaticResource styleTextBox}"></TextBox>
+                    <Button Style="{StaticResource styleButton}" Click="ButtonEdit_Click">Edit</Button>
+                </StackPanel>
+
+            </TabItem>
+            <TabItem Header="Delete genre">
+                <StackPanel Style="{StaticResource styleStackpanelVert}">
+                    <Label Style="{StaticResource styleLabel}">List of genres:</Label>
+                    <ComboBox Name="ComboBoxDelete" Style="{StaticResource styleComboBox}"></ComboBox>
+                    <Button Style="{StaticResource styleButton}" Click="ButtonDelete_Click">Delete</Button>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Settings automatic">
+                <!-- define grid for automatic settings tab -->
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition MinHeight="25" Height="Auto"/>
+                        <RowDefinition MinHeight="25" Height="50"/>
+                        <RowDefinition MinHeight="25" Height="50"/>
+                        <RowDefinition MinHeight="25" Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40*"/>
+                        <ColumnDefinition Width="60*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.ColumnSpan="2" Style="{StaticResource styleLabel}">Automatic saving:</Label>
+                    <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource styleLabelRight}">Enabled</Label>
+                    <CheckBox Name="checkBoxAuto" Grid.Row="1" Grid.Column="1"  Style="{StaticResource styleCheckBoxLeft}" Checked="checkBoxAuto_CheckChanged" Unchecked="checkBoxAuto_CheckChanged"/>
+                    <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource styleLabelRight}">Interval</Label>
+                    <Grid Grid.Row="2" Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Name="textBoxInterval" Grid.Column="0" TextChanged="textBoxInterval_TextChanged" Style="{StaticResource styleTextBoxLeft}">5</TextBox>
+                        <ComboBox Name="ComboBoxInverval" Grid.Column="1" SelectionChanged="ComboBoxInverval_SelectionChanged" Style="{StaticResource styleComboBoxLeft}"></ComboBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>
